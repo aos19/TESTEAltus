@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="MasterTool IEC XE" productVersion="MasterTool IEC XE 3.71" creationDateTime="2026-11-16T05:17:04.0005941" />
+  <contentHeader name="PlotArraysXP.project" modificationDateTime="2026-11-16T05:09:32.1755442">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">PlotArraysXP</property>
+          <property name="Project Profile" type="string">MachineProfile</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="Comportamento3" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="contadorTempo">
+              <type>
+                <INT />
+              </type>
+              <initialValue>
+                <simpleValue value="0" />
+              </initialValue>
+            </variable>
+            <variable name="etapaExibicao">
+              <type>
+                <INT />
+              </type>
+              <initialValue>
+                <simpleValue value="0" />
+              </initialValue>
+            </variable>
+            <variable name="i">
+              <type>
+                <INT />
+              </type>
+            </variable>
+            <variable name="faseMovimento">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="0.0" />
+              </initialValue>
+            </variable>
+            <variable name="tipoCurva">
+              <type>
+                <INT />
+              </type>
+              <initialValue>
+                <simpleValue value="0" />
+              </initialValue>
+            </variable>
+            <variable name="amplitudeOnda">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="10.0" />
+              </initialValue>
+            </variable>
+            <variable name="inclinacaoRampa">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="1.5" />
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// Incrmentando o contador
+contadorTempo := contadorTempo + 1;
+
+CASE etapaExibicao OF
+	// Estado de limpeza da tela
+	0: 
+		IF contadorTempo &gt;= 100 THEN
+			contadorTempo := 0;
+			
+			// Alternando a curva
+			tipoCurva := (tipoCurva + 1) MOD 3;
+			
+			IF tipoCurva = 0 THEN
+				// Estilo 1
+				amplitudeOnda := 8.0;
+				inclinacaoRampa := 1.0;
+				faseMovimento := 0.0;
+			
+			ELSIF tipoCurva = 1 THEN
+				// Estilo 2
+				amplitudeOnda := 20.0;
+				inclinacaoRampa := 1.5;
+				faseMovimento := 2.5;
+				
+			ELSE
+				// Estilo 3
+				amplitudeOnda := 5.0;
+				inclinacaoRampa := 2.0;
+				faseMovimento := 5.0;
+			END_IF
+			
+			// Preenchimento de uma vez
+			FOR i := 0 TO 99 DO
+				PlotArrays.arraySetpoint[i] := INT_TO_REAL(i) * inclinacaoRampa;
+                PlotArrays.arrayCurrentValue[i] := PlotArrays.arraySetpoint[i] + (SIN(INT_TO_REAL(i) * 0.25 + faseMovimento) * amplitudeOnda);
+			END_FOR
+			
+			etapaExibicao := 1;
+		END_IF
+	
+		
+	// Estado com a curva visível na tela
+	1:
+		IF contadorTempo &gt;= 150 THEN
+			contadorTempo := 0;
+			
+			// Zerando o array inteiro
+			FOR i := 0 TO 99 DO
+				PlotArrays.arraySetpoint[i] := 0.0;
+				PLotArrays.arrayCurrentValue[i] := 0.0; 
+			END_FOR
+			
+			// Estado de tela limpa
+			etapaExibicao := 0;			
+	END_IF
+END_CASE</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>1f04c492-d097-475d-b245-ddbdeb270d3d</ObjectId>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/projectstructure" handleUnknown="discard">
+      <ProjectStructure>
+        <Object Name="Comportamento3" ObjectId="1f04c492-d097-475d-b245-ddbdeb270d3d" />
+      </ProjectStructure>
+    </data>
+  </addData>
+</project>
