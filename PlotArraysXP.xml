@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="MasterTool IEC XE" productVersion="MasterTool IEC XE 3.71" creationDateTime="2026-11-16T15:50:03.383233" />
+  <fileHeader companyName="" productName="MasterTool IEC XE" productVersion="MasterTool IEC XE 3.71" creationDateTime="2026-11-16T15:51:42.6388275" />
   <contentHeader name="PlotArraysXP.project" modificationDateTime="2026-11-16T15:49:51.4663983">
     <coordinateInfo>
       <fbd>
@@ -93,6 +93,10 @@
             <xhtml xmlns="http://www.w3.org/1999/xhtml">VARIAVELNOVATESTANDODIFF2 := 0;
 
 // Incrmentando o contador
+contadorTempo := contadorTempo + 1;
+contadorTempo := contadorTempo + 1;
+contadorTempo := contadorTempo + 1;
+contadorTempo := contadorTempo + 1;
 contadorTempo := contadorTempo + 1;
 
 CASE etapaExibicao OF
